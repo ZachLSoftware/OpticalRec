@@ -2,9 +2,23 @@
 <html lang="en">
     <head>
         {% block title %}<title>OpticalRec</title>{% endblock %}
+        {% load static %}
+        <link rel="stylesheet" href="{% static 'css/styles.css' %}">
     </head>
-    <body>
-        {% block navbar %}<a href="{% url 'index' %}">Home</a>{% endblock %}
-        {% block content %}<p>Test</p>{% endblock %}
+    <body class="body">
+        {% block navbar %}
+        <header class="navbar">
+            <ul>
+                <li><a href="{% url 'index' %}">Home</a></li>
+                <li><a href="{% url 'dashboard'}">Dashboard</a></li>
+            </ul>
+        </header>
+        {% endblock %}
+        
+        <div class="content">
+            {% block content %}
+            <p>Test</p>
+            {% endblock %}
+        </div>
     </body>
 </html>
