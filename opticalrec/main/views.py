@@ -1,5 +1,8 @@
 from django.shortcuts import render, redirect
+from .models import Video
 from .forms import VideoForm
+from pathlib import Path
+
 
 # Create your views here.
 def index(request):
@@ -22,3 +25,12 @@ def video_upload(request):
     return render(request, 'video_upload.html', {
         'form': form
     })
+
+def list_videos(request):
+    vids=Video.objects.filter(userId=0).order_by('-uploadedAt')
+    return render(request, 'vid_list.html', {'vids':vids})
+
+def delete_video(request, vid_id):
+    obj=Video.objects.get(id=vid_id)
+    obj.delete()
+    return redirect(list_videos)

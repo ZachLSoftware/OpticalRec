@@ -1,0 +1,22 @@
+{% extends "base_template.html" %}
+
+{%block content %}
+{% for vid in vids %}
+<table class="video_list">
+    <tr>
+        <td>
+            <h2><strong>{{ vid.name }}</strong></h2>
+        </td>
+        <td>
+            <a href "Extract">Extract Data</a>
+        </td>
+        <td>
+            <a href="{% url 'delete_video' vid.id %}">Delete Video</a>
+        </td>
+    </tr>
+</table>
+
+{% empty %}
+    <h2>No Videos Found</h2>
+{% endfor %}
+{% endblock %}
