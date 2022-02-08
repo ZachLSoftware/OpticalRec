@@ -1,0 +1,1 @@
+cmd /k ..\env\Scripts\activate ^&^& py ..\opticalrec\manage.py makemigrations ^&^& py ..\opticalrec\manage.py migrate ^&^& py ..\opticalrec\manage.py runserver
