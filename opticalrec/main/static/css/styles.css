@@ -48,8 +48,8 @@
 
 .body .content {
 	margin:auto;
-	height: auto;
-	width: 1200px;
+	height: 350px;
+	width: auto;
 	text-align: left;
 	background-position: top;
 	box-shadow: 0px 15px 20px;
@@ -57,4 +57,27 @@
 
 .video_list td {
   padding: 5px 15px;
+}
+
+
+.content ul li h3{
+display: inline;
+border-bottom: double;
+margin-left: 1.5%;
+
+}
+
+.content ul li video{
+float: left;
+border-style: double;
+padding-bottom:2%;
+}
+
+.content ul li p{
+margin-left: 20%;
+}
+
+.content ul li p1{
+margin-left: 20%;
+
 }

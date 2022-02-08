@@ -34,3 +34,8 @@ def delete_video(request, vid_id):
     obj=Video.objects.get(id=vid_id)
     obj.delete()
     return redirect(list_videos)
+
+
+def dashboard(request):
+
+    return render(request,"dashboard.html")
