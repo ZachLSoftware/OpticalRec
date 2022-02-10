@@ -14,4 +14,11 @@ class Video(models.Model):
 
     def delete(self):
         self.videoFile.delete()
-        super().delete()
+        self.videoFile="Deleted"
+        self.save()
+
+class Frame(models.Model):
+    vidId=models.IntegerField()
+    userId=models.IntegerField()
+    frameFile=models.ImageField(upload_to="frames/", blank=True)
+    frameNum=models.IntegerField()

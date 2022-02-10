@@ -1,7 +1,9 @@
 from django.shortcuts import render, redirect
 from .models import Video
+from .models import Frame
 from .forms import VideoForm
 from pathlib import Path
+from .utils.Upload import videoIntoFrames
 
 
 # Create your views here.
@@ -27,7 +29,7 @@ def video_upload(request):
     })
 
 def list_videos(request):
-    vids=Video.objects.filter(userId=0).order_by('-uploadedAt')
+    vids=Video.objects.filter(userId=0).exclude(videoFile="Deleted").order_by('-uploadedAt')
     return render(request, 'vid_list.html', {'vids':vids})
 
 def delete_video(request, vid_id):
@@ -39,3 +41,13 @@ def delete_video(request, vid_id):
 def dashboard(request):
 
     return render(request,"dashboard.html")
+
+def import_video_tensor(request, vid_id):
+    obj=Video.objects.get(id=vid_id)
+    videoIntoFrames(obj)
+    return redirect(list_videos)
+
+
+def framelist(request):
+    frames=Frame.objects.all()
+    return render(request,"frame_list.html", {"frames":frames})

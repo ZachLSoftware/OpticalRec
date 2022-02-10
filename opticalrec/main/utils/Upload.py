@@ -1,30 +1,25 @@
-#!/usr/bin/env python
-# coding: utf-8
-
-# In[3]:
-
-
 import cv2     # for capturing videos
 import math   # for mathematical operations
 import matplotlib.pyplot as plt    # for plotting the images
-get_ipython().run_line_magic('matplotlib', 'inline')
+#get_ipython().run_line_magic('matplotlib', 'inline')
 import pandas as pd
 from keras.preprocessing import image   # for preprocessing the images
 import numpy as np    # for mathematical operations
 from keras.utils import np_utils
 from skimage.transform import resize   # for resizing images
+from main.models import Frame
+from opticalrec.settings import MEDIA_ROOT
+import os
 
 
-# In[149]:
-
-def videoImport(pathname):
-    videoFile = pathname
-    return videoFile
-    
-
-def videoIntoFrames():
+def videoIntoFrames(vid):
+    videoFile=vid.videoFile.path
+    vidId=vid.id
+    userId=vid.userId
     count = 0
-    cap = cv2.VideoCapture(videoImport())   # capturing the video from the given path
+    if Frame.objects.filter(vidId=vidId).exists():
+        return "already exists"
+    cap = cv2.VideoCapture(videoFile)   # capturing the video from the given path
     frameRate = cap.get(5) #frame rate
     x=1
     while(cap.isOpened()):
@@ -33,29 +28,29 @@ def videoIntoFrames():
         if (ret != True):
             break
         if (frameId % math.floor(frameRate) == 0):
-            filename ="../media/frames/frame%d.jpg" % count;count+=1
-            cv2.imwrite(filename, frame)
+            filename ="frames/%d/frame%d.jpg" % (vidId, count)
+            if not os.path.isdir(str(MEDIA_ROOT) + "/frames/" + str(vidId)):
+                os.mkdir(str(MEDIA_ROOT) + "/frames/" + str(vidId))
+            cv2.imwrite(str(MEDIA_ROOT) + "/" + filename, frame)
+            f=Frame()
+            f.vidId=vidId
+            f.userId=userId
+            f.frameFile.name=filename
+            f.frameNum=count
+            f.save()
+            
+            count+=1
     cap.release()
     return "Done!"
 
 
 
-
-# In[9]:
-
-
+"""
 img = plt.imread('clips_frames/clip1_frames/frame0.jpg')   # reading image using its name
 plt.imshow(img)
 
-
-# In[11]:
-
-
 data = pd.read_excel('mapping.xlsx')     # reading the csv file
 data.head()      # printing first five rows of the file
-
-
-# In[12]:
 
 
 X = [ ]     # creating an empty array
@@ -259,4 +254,4 @@ print("The screen time of HEALTH is", classes_x[classes_x==1].shape[0], "seconds
 print("The screen time of NO HEALTH is", classes_x[classes_x==0].shape[0], "seconds")
 
 
-
+"""

@@ -8,7 +8,7 @@
             <h2><strong>{{ vid.name }}</strong></h2>
         </td>
         <td>
-            <a href "Extract">Extract Data</a>
+            <a href="{% url 'import_video_tensor' vid.id %}">Import Data</a>
         </td>
         <td>
             <a href="{% url 'delete_video' vid.id %}">Delete Video</a>

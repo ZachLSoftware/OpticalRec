@@ -48,7 +48,7 @@
 
 .body .content {
 	margin:auto;
-	height: 350px;
+	height: auto;
 	width: auto;
 	text-align: left;
 	background-position: top;

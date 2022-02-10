@@ -5,7 +5,7 @@ To set up the Django server for Development.
     -setups up a virtual environment called env
     -starts virtual environment and installs requirments.
 
-2. setup MySQL database
+2. setup MySQL database *If you want to use a local database
     -Open dev_db_setup.sql in workbench
     -Run script
 
