@@ -14,10 +14,9 @@ import os
 
 def videoIntoFrames(vid):
     videoFile=vid.videoFile.path
-    vidId=vid.id
     userId=vid.userId
     count = 0
-    if Frame.objects.filter(vidId=vidId).exists():
+    if Frame.objects.filter(video_id=vid.id).exists():
         return "already exists"
     cap = cv2.VideoCapture(videoFile)   # capturing the video from the given path
     frameRate = cap.get(5) #frame rate
@@ -28,12 +27,12 @@ def videoIntoFrames(vid):
         if (ret != True):
             break
         if (frameId % math.floor(frameRate) == 0):
-            filename ="frames/%d/frame%d.jpg" % (vidId, count)
-            if not os.path.isdir(str(MEDIA_ROOT) + "/frames/" + str(vidId)):
-                os.mkdir(str(MEDIA_ROOT) + "/frames/" + str(vidId))
+            filename ="frames/%d/frame%d.jpg" % (vid.id, count)
+            if not os.path.isdir(str(MEDIA_ROOT) + "/frames/" + str(vid.id)):
+                os.mkdir(str(MEDIA_ROOT) + "/frames/" + str(vid.id))
             cv2.imwrite(str(MEDIA_ROOT) + "/" + filename, frame)
             f=Frame()
-            f.vidId=vidId
+            f.video=vid
             f.userId=userId
             f.frameFile.name=filename
             f.frameNum=count

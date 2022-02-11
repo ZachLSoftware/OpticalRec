@@ -18,7 +18,7 @@ class Video(models.Model):
         self.save()
 
 class Frame(models.Model):
-    vidId=models.IntegerField()
+    video=models.ForeignKey(Video, on_delete=models.CASCADE)
     userId=models.IntegerField()
-    frameFile=models.ImageField(upload_to="frames/", blank=True)
+    frameFile=models.ImageField(blank=True)
     frameNum=models.IntegerField()
