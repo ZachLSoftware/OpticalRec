@@ -11,6 +11,9 @@
             <a href="{% url 'import_video_tensor' vid.id %}">Import Data</a>
         </td>
         <td>
+            <a href="{% url 'video_crop_display' vid.id %}">Select Data</a>
+        </td>
+        <td>
             <a href="{% url 'delete_video' vid.id %}">Delete Video</a>
         </td>
     </tr>

@@ -6,8 +6,10 @@ import pandas as pd
 from keras.preprocessing import image   # for preprocessing the images
 import numpy as np    # for mathematical operations
 from keras.utils import np_utils
+from pyparsing import And
 from skimage.transform import resize   # for resizing images
 from main.models import Frame
+from main.models import videoResize
 from opticalrec.settings import MEDIA_ROOT
 import os
 
@@ -16,7 +18,8 @@ def videoIntoFrames(vid):
     videoFile=vid.videoFile.path
     userId=vid.userId
     count = 0
-    if Frame.objects.filter(video_id=vid.id).exists():
+    crop=videoResize.objects.get(video_id=vid.id)
+    if Frame.objects.filter(video_id=vid.id).exists() and Frame.objects.filter(frameFile='frames/'+str(vid.id)+'/frame0.jpg').exists():
         return "already exists"
     cap = cv2.VideoCapture(videoFile)   # capturing the video from the given path
     frameRate = cap.get(5) #frame rate
@@ -27,10 +30,11 @@ def videoIntoFrames(vid):
         if (ret != True):
             break
         if (frameId % math.floor(frameRate) == 0):
+            cframe=frame[round(crop.y1*crop.nat_height):round(crop.y2*crop.nat_height), round(crop.x1*crop.nat_width):round(crop.x2*crop.nat_width)]
             filename ="frames/%d/frame%d.jpg" % (vid.id, count)
             if not os.path.isdir(str(MEDIA_ROOT) + "/frames/" + str(vid.id)):
                 os.mkdir(str(MEDIA_ROOT) + "/frames/" + str(vid.id))
-            cv2.imwrite(str(MEDIA_ROOT) + "/" + filename, frame)
+            cv2.imwrite(str(MEDIA_ROOT) + "/" + filename, cframe)
             f=Frame()
             f.video=vid
             f.userId=userId

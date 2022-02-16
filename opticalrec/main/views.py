@@ -1,9 +1,17 @@
 from django.shortcuts import render, redirect
 from .models import Video
 from .models import Frame
-from .forms import VideoForm
+from .forms import *
 from pathlib import Path
 from .utils.Upload import videoIntoFrames
+from .utils.preview_frame import preview_frame
+from main.models import Frame
+from django.urls import reverse
+from opticalrec.settings import MEDIA_ROOT
+from django.http import HttpResponse
+import json
+import os
+import cv2
 
 
 # Create your views here.
@@ -21,7 +29,7 @@ def video_upload(request):
             else:
                 object.userId=0
             object.save()
-            return redirect('index')
+            return redirect(reverse('video_crop_display', kwargs={"vid_id":object.id}))
     else:
         form = VideoForm()
     return render(request, 'video_upload.html', {
@@ -51,3 +59,27 @@ def import_video_tensor(request, vid_id):
 def framelist(request):
     frames=Frame.objects.all()
     return render(request,"frame_list.html", {"frames":frames})
+
+
+def video_crop_display(request, vid_id):
+    obj=Video.objects.get(id=vid_id)
+    if request.method == 'POST':
+        form = VideoResizeForm(request.POST, request.FILES)
+        if form.is_valid():
+            object = form.save(commit=False)
+            object.video=obj
+            object.x2=(object.x1+object.width)/object.nat_width
+            object.y2=(object.y1+object.height)/object.nat_height
+            object.x1=object.x1/object.nat_width
+            object.y1=object.y1/object.nat_height
+            object.save()
+            response = {'status': 0, 'url':"/main/import_video_tensor/"+str(obj.id), 'message': ("succesful")}
+            return HttpResponse(json.dumps(response), content_type='application/json')
+        else:
+            response = {'status': 1, 'message': ("Issue Processing Form")}
+            return HttpResponse(json.dumps(response), content_type='application/json')
+    else:
+        form = VideoResizeForm()
+        f=preview_frame(obj)
+    
+        return render(request, 'video_crop.html', {'frame':f, 'form':form})

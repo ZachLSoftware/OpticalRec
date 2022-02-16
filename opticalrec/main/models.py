@@ -17,6 +17,18 @@ class Video(models.Model):
         self.videoFile="Deleted"
         self.save()
 
+class videoResize(models.Model):
+    label = models.CharField(max_length=500)
+    video=models.ForeignKey(Video, on_delete=models.CASCADE)
+    x1=models.FloatField(null=True)
+    y1=models.FloatField(null=True)
+    x2=models.FloatField(null=True)
+    y2=models.FloatField(null=True)
+    width=models.FloatField(null=True)
+    height=models.FloatField(null=True)
+    nat_height=models.IntegerField(null=True)
+    nat_width=models.IntegerField(null=True)
+
 class Frame(models.Model):
     video=models.ForeignKey(Video, on_delete=models.CASCADE)
     userId=models.IntegerField()
