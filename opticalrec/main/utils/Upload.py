@@ -16,10 +16,16 @@ import os
 
 def videoIntoFrames(vid):
     videoFile=vid.videoFile.path
-    userId=vid.userId
+    user=vid.user
     count = 0
     crop=videoResize.objects.get(video_id=vid.id)
-    if Frame.objects.filter(video_id=vid.id).exists() and Frame.objects.filter(frameFile='frames/'+str(vid.id)+'/frame0.jpg').exists():
+    user_folder = str(MEDIA_ROOT) + "/frames/" + str(user.username)
+    video_folder = "/" + str(vid.id)
+    if not os.path.isdir(user_folder):
+        os.mkdir(user_folder)
+    if not os.path.isdir(user_folder + video_folder):
+        os.mkdir(user_folder+video_folder)
+    if Frame.objects.filter(video_id=vid.id).exists() and Frame.objects.filter(frameFile__contains='/frame0.jpg').exists():
         return "already exists"
     cap = cv2.VideoCapture(videoFile)   # capturing the video from the given path
     frameRate = cap.get(5) #frame rate
@@ -31,13 +37,11 @@ def videoIntoFrames(vid):
             break
         if (frameId % math.floor(frameRate) == 0):
             cframe=frame[round(crop.y1*crop.nat_height):round(crop.y2*crop.nat_height), round(crop.x1*crop.nat_width):round(crop.x2*crop.nat_width)]
-            filename ="frames/%d/frame%d.jpg" % (vid.id, count)
-            if not os.path.isdir(str(MEDIA_ROOT) + "/frames/" + str(vid.id)):
-                os.mkdir(str(MEDIA_ROOT) + "/frames/" + str(vid.id))
+            filename ="frames/%s/%d/%s_frame%d.jpg" % (user.username,vid.id, crop.label, count)
             cv2.imwrite(str(MEDIA_ROOT) + "/" + filename, cframe)
             f=Frame()
             f.video=vid
-            f.userId=userId
+            f.user=user
             f.frameFile.name=filename
             f.frameNum=count
             f.save()

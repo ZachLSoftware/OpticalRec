@@ -9,6 +9,7 @@ from main.models import Frame
 from django.urls import reverse
 from opticalrec.settings import MEDIA_ROOT
 from django.http import HttpResponse
+from django.contrib.auth.decorators import login_required
 import json
 import os
 import cv2
@@ -18,16 +19,14 @@ import cv2
 def index(request):
     return render(request, "index.html")
 
-
+@login_required
 def video_upload(request):
     if request.method == 'POST':
         form = VideoForm(request.POST, request.FILES)
         if form.is_valid():
             object = form.save(commit=False)
             if request.user.is_authenticated:
-                object.userId=request.user.id
-            else:
-                object.userId=0
+                object.user=request.user
             object.save()
             return redirect(reverse('video_crop_display', kwargs={"vid_id":object.id}))
     else:
@@ -36,31 +35,34 @@ def video_upload(request):
         'form': form
     })
 
+@login_required
 def list_videos(request):
-    vids=Video.objects.filter(userId=0).exclude(videoFile="Deleted").order_by('-uploadedAt')
+    vids=Video.objects.filter(user=request.user).exclude(videoFile="Deleted").order_by('-uploadedAt')
     return render(request, 'vid_list.html', {'vids':vids})
 
+@login_required
 def delete_video(request, vid_id):
     obj=Video.objects.get(id=vid_id)
     obj.delete()
     return redirect(list_videos)
 
-
+@login_required
 def dashboard(request):
 
     return render(request,"dashboard.html")
 
+@login_required
 def import_video_tensor(request, vid_id):
     obj=Video.objects.get(id=vid_id)
     videoIntoFrames(obj)
     return redirect(list_videos)
 
-
+@login_required
 def framelist(request):
     frames=Frame.objects.all()
     return render(request,"frame_list.html", {"frames":frames})
 
-
+@login_required
 def video_crop_display(request, vid_id):
     obj=Video.objects.get(id=vid_id)
     if request.method == 'POST':

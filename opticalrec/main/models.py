@@ -1,11 +1,15 @@
 from django.db import models
 from .validators import *
+from django_random_id_model import RandomIDModel
+from django.contrib.auth.models import AbstractUser
+import uuid
 
-# Create your models here.
+class User(AbstractUser):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
 
-class Video(models.Model):
+class Video(RandomIDModel):
     name= models.CharField(max_length=500)
-    userId=models.IntegerField(null=True, blank=True)
+    user=models.ForeignKey(User, on_delete=models.CASCADE)
     videoFile= models.FileField(upload_to='videos/', validators=[validate_file_ext], null=True, verbose_name="")
     uploadedAt = models.DateTimeField(auto_now_add=True)
 
@@ -31,6 +35,6 @@ class videoResize(models.Model):
 
 class Frame(models.Model):
     video=models.ForeignKey(Video, on_delete=models.CASCADE)
-    userId=models.IntegerField()
+    user=models.ForeignKey(User, on_delete=models.CASCADE)
     frameFile=models.ImageField(blank=True)
     frameNum=models.IntegerField()
