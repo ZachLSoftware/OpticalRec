@@ -16,14 +16,20 @@
                 <li><a href="{% url 'video_upload' %}">Upload</a></li>
                 <li><a href="{% url 'list_videos' %}">Video List</a></li>
                 <li><a href="{% url 'dashboard' %}">Dashboard</a></li>
+                <li><a href="{% url 'profile' %}">Profile</a></li>
             </ul>
         </header>
         {% endblock %}
         
         <div class="content">
             {% block content %}
-            <p>Test</p>
             {% endblock %}
+
+            {% if messages %}
+                {% for message in messages %}
+                    <p>{{ message }}</p>
+                {% endfor %}
+            {% endif %}
         </div>
     </body>
 </html>

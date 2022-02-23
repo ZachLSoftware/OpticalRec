@@ -1,0 +1,17 @@
+{% extends "base_template.html" %}
+
+{% block content %}
+    <h1>Login Page</h1>
+
+    <form method="POST">
+        {% csrf_token %}
+        <fieldset>
+            <legend>Login to account</legend>
+            {{ form.as_p }}
+        </fieldset>
+        <button type="submit">Login</button>
+    </form>
+    <p><a href="{% url 'register' %}">Register</a></p>
+
+    <p><a href="{% url 'profile' %}">Back to Profile</a></p>
+{% endblock content %}

@@ -13,7 +13,8 @@ from django.contrib.auth.decorators import login_required
 import json
 import os
 import cv2
-
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib import messages
 
 # Create your views here.
 def index(request):
@@ -85,3 +86,19 @@ def video_crop_display(request, vid_id):
         f=preview_frame(obj)
     
         return render(request, 'video_crop.html', {'frame':f, 'form':form})
+
+def profile(request):
+    return render(request, 'profile.html')
+
+
+def register(request):
+    if request.method == "POST":
+        form = CreateUser(request.POST)
+        if form.is_valid():
+            form.save()
+            username = form.cleaned_data.get('username')
+            messages.success(request, f"{username}'s account created.")
+            return redirect('login')
+    else:
+        form = UserCreationForm()
+    return render(request, 'register.html', {'form': form})

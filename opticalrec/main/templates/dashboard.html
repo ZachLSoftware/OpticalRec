@@ -1,26 +1,28 @@
 {% extends "base_template.html" %}
 
 {%block content%}
-<div class="content">
-<ul>
-<li>
-<h2>Video 1 (Video Name):</h2>
-<h3>Video information analytics:</h3>
-<video width="320" height="240" controls>
-  <source src="../test_video.mp4" type="video/mp4">
-</video>
+<h1>Dashboard</h1>
+{% if user.is_authenticated %}
+  <div class="content">
+  <ul>
+  <li>
+  <h2>Video 1 (Video Name):</h2>
+  <h3>Video information analytics:</h3>
+  <video width="320" height="240" controls>
+    <source src="../test_video.mp4" type="video/mp4">
+  </video>
 
-<p><br>Captured data 1: </p>
-<p><br>Captured data 2: </p>
-<p><br>Captured data 3: </p>
-<p><br>Summary of data: </p>
+  <p><br>Captured data 1: </p>
+  <p><br>Captured data 2: </p>
+  <p><br>Captured data 3: </p>
+  <p><br>Summary of data: </p>
 
-</li>
-</ul>
+  </li>
+  </ul>
 
-</div>
-
-
-
-
+  </div>
+{% else %}
+  <p><a href="{% url 'profile' %}">You need to be logged in</a></p>
+{% endif %}
+  <p><a href="{% url 'index' %}">Return to home</a></p>
 {% endblock %}

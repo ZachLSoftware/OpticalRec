@@ -4,6 +4,7 @@ from django_random_id_model import RandomIDModel
 from django.contrib.auth.models import AbstractUser
 import uuid
 
+
 class User(AbstractUser):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
 
@@ -35,6 +36,6 @@ class videoResize(models.Model):
 
 class Frame(models.Model):
     video=models.ForeignKey(Video, on_delete=models.CASCADE)
-    user=models.ForeignKey(User, on_delete=models.CASCADE)
+    #user=models.ForeignKey(User, on_delete=models.CASCADE)
     frameFile=models.ImageField(blank=True)
     frameNum=models.IntegerField()

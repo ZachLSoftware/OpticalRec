@@ -1,5 +1,6 @@
 from django.urls import path
 from . import views
+from django.contrib.auth import views as auth_views
 
 urlpatterns = [
     path('', views.index, name='index'),
@@ -9,5 +10,10 @@ urlpatterns = [
     path('delete_video/<int:vid_id>', views.delete_video, name='delete_video'),
     path('dashboard',views.dashboard,name='dashboard'),
     path('import_video_tensor/<int:vid_id>', views.import_video_tensor, name='import_video_tensor'),
-    path('video_crop_display/<int:vid_id>', views.video_crop_display, name='video_crop_display')
+    path('video_crop_display/<int:vid_id>', views.video_crop_display, name='video_crop_display'),
+    path('profile', views.profile, name = 'profile'),
+    path('login', auth_views.LoginView.as_view(template_name = 'login.html'), name = 'login'),
+    path('logout', auth_views.LogoutView.as_view(template_name = 'logout.html'), name = 'logout'),
+    path('register', views.register, name = 'register')
+
 ]
