@@ -1,0 +1,16 @@
+{% extends "base_template.html" %}
+
+{% block content %}
+    <h1>Register Page</h1>
+    
+    <form method="POST">
+        {% csrf_token %}
+        <fieldset>
+            <legend>Register an account</legend>
+            {{ form.as_p }}
+        </fieldset>
+        <button type="submit">Create account</button>
+    </form>
+    
+    <p><a href="{% url 'profile' %}">Back to Profile</a></p>
+{% endblock content %}

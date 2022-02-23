@@ -1,10 +1,14 @@
 {% extends "base_template.html" %}
 {% block content %}
-  <form method="post" enctype="multipart/form-data">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Upload</button>
-  </form>
-
-  <p><a href="{% url 'index' %}">Return to home</a></p>
+<h1>Upload</h1>
+  {% if user.is_authenticated %}
+    <form method="post" enctype="multipart/form-data">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <button type="submit">Upload</button>
+    </form>
+  {% else %}
+    <p><a href="{% url 'profile' %}">You need to be logged in</a></p>
+  {% endif %}
+    <p><a href="{% url 'index' %}">Return to home</a></p>
 {% endblock %}

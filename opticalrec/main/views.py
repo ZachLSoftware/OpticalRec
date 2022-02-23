@@ -4,7 +4,8 @@ from .models import Frame
 from .forms import VideoForm
 from pathlib import Path
 from .utils.Upload import videoIntoFrames
-
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib import messages
 
 # Create your views here.
 def index(request):
@@ -29,7 +30,7 @@ def video_upload(request):
     })
 
 def list_videos(request):
-    vids=Video.objects.filter(userId=0).exclude(videoFile="Deleted").order_by('-uploadedAt')
+    vids=Video.objects.filter(user_id=0).exclude(videoFile="Deleted").order_by('-uploadedAt')
     return render(request, 'vid_list.html', {'vids':vids})
 
 def delete_video(request, vid_id):
@@ -51,3 +52,19 @@ def import_video_tensor(request, vid_id):
 def framelist(request):
     frames=Frame.objects.all()
     return render(request,"frame_list.html", {"frames":frames})
+
+def profile(request):
+    return render(request, 'profile.html')
+
+
+def register(request):
+    if request.method == "POST":
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            form.save()
+            username = form.cleaned_data.get('username')
+            messages.success(request, f"{username}'s account created.")
+            return redirect('login')
+    else:
+        form = UserCreationForm()
+    return render(request, 'register.html', {'form': form})
