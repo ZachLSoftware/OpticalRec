@@ -9,6 +9,7 @@ from keras.utils import np_utils
 from pyparsing import And
 from skimage.transform import resize   # for resizing images
 from main.models import Frame
+from main.models import ExtractedData
 from main.models import videoResize
 from opticalrec.settings import MEDIA_ROOT
 import os
@@ -43,12 +44,20 @@ def videoIntoFrames(vid,label):
             cv2.imwrite(str(MEDIA_ROOT) + "/" + filename, cframe)
             f=Frame()
             f.video=vid
-            f.user=user
+            #f.user=user
             f.frameFile.name=filename
             f.frameNum=cap.get(cv2.CAP_PROP_POS_FRAMES)
             f.timeStamp=(cap.get(cv2.CAP_PROP_POS_MSEC)/1000)
             f.save()
-            
+
+            exd=ExtractedData()
+            exd.video=vid
+            exd.label=crop.label
+            exd.user=user
+            exd.value=count
+            exd.valueChange=1
+            exd.timeStamp=f.timeStamp
+            exd.save()
             count+=1
     cap.release()
     return "Done!"

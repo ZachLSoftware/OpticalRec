@@ -44,3 +44,14 @@ class Frame(models.Model):
     def delete(self):
         self.frameFile.delete()
         super().delete()
+
+
+
+class ExtractedData(models.Model):
+    video=models.ForeignKey(Video, on_delete=models.CASCADE)
+    user=models.ForeignKey(User, on_delete=models.CASCADE)
+    label=models.TextField(max_length=500)
+    timeStamp=models.FloatField()
+    value=models.IntegerField()
+    valueChange=models.IntegerField()
+

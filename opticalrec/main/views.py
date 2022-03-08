@@ -1,7 +1,5 @@
 from django.shortcuts import render, redirect
-from .models import Video
-from .models import Frame
-from .models import videoResize
+from .models import *
 from .forms import *
 from pathlib import Path
 from .utils.Upload import videoIntoFrames
@@ -50,8 +48,36 @@ def delete_video(request, vid_id):
 
 @login_required
 def dashboard(request):
+    context={
+        'videos' : []
+    }
+    unsortedData = ExtractedData.objects.filter(user=request.user).order_by('-video_id')
+    videos={}
+    for data in unsortedData:
+        if data.video_id not in videos:
+            videos[data.video_id]=[]
+        if not videos[data.video_id]:
+            videos[data.video_id].append({data.label: []})
+        else:
+            label_test=False 
+            for vid in videos[data.video_id]:
+                if data.label in vid:
+                    label_test=True
+                    break
+            if not label_test:
+                videos[data.video_id].append({data.label:[]})
 
-    return render(request,"dashboard.html")
+    for vid in videos.keys():
+        for data in unsortedData:
+            if data.video_id==vid:
+                for l in videos[vid]:
+                    for label in l.keys():
+                        if data.label==label:
+                            l[label].append(data)
+    for vid in videos.keys():
+        context['videos'].append(Video.objects.get(id=vid).name)
+    context['data']=videos
+    return render(request,"dashboard.html", context)
 
 @login_required
 def import_video_tensor(request, vid_id, label):
