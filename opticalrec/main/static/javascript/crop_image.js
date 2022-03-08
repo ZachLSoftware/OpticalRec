@@ -2,6 +2,7 @@ const alertBox = document.getElementById('alert-box')
 const cropForm = document.getElementById('crop-form')
 const confirmBtn = document.getElementById('confirm-btn')
 const cropBtn = document.getElementById('crop-btn')
+const prevBtn = document.getElementById('new-prev-btn')
 const rejectBtn = document.getElementById('reject-btn')
 const hideImage = document.getElementById('hide-image')
 const labelForm = document.getElementById('label-form')
@@ -10,6 +11,7 @@ const replace = document.getElementById('replace');
 
 window.addEventListener('DOMContentLoaded', function () {
     cropBtn.classList.remove('not-visible');
+    prevBtn.classList.remove('not-visible');
     var image = document.querySelector('#image');
     var image = document.getElementById('image');
 
@@ -21,6 +23,7 @@ window.addEventListener('DOMContentLoaded', function () {
     cropBtn.addEventListener('click', ()=>{
         labelForm.classList.remove('not-visible');
         cropBtn.classList.add('not-visible');
+        prevBtn.classList.add('not-visible');
         hideImage.classList.add('not-visible');
         rejectBtn.classList.remove('not-visible');
         confirmBtn.classList.remove('not-visible');
@@ -32,6 +35,7 @@ window.addEventListener('DOMContentLoaded', function () {
         labelForm.classList.add('not-visible');
         hideImage.classList.remove('not-visible');
         cropBtn.classList.remove('not-visible');
+        prevBtn.classList.remove('not-visible');
         rejectBtn.classList.add('not-visible');
         confirmBtn.classList.add('not-visible');
     })
@@ -77,7 +81,7 @@ window.addEventListener('DOMContentLoaded', function () {
                 error: function(error){
                     console.log('error', error)
                     alertBox.innerHTML = `<div class="alert alert-danger" role="alert">
-                                            Ups...something went wrong
+                                            oops...something went wrong
                                         </div>`
                 },
                 cache: false,

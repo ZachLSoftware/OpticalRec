@@ -39,3 +39,8 @@ class Frame(models.Model):
     #user=models.ForeignKey(User, on_delete=models.CASCADE)
     frameFile=models.ImageField(blank=True)
     frameNum=models.IntegerField()
+    timeStamp=models.FloatField(null=True)
+
+    def delete(self):
+        self.frameFile.delete()
+        super().delete()

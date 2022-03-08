@@ -23,7 +23,7 @@
 
 {% block content %}
 <div id="alert-box"></div>
-<form action="{% url 'video_crop_display' frame.video.id %}" id="crop-form">
+<form action="{% url 'video_crop_display' frame.video.id%}" id="crop-form">
   {% csrf_token %}
   {{form.as_hidden}}
 </form>
@@ -41,6 +41,7 @@
   </div>
   
   <button class="btn btn-primary mt-3 not-visible" id="crop-btn">Crop</button>
+  <button onclick="location.href='{% url 'video_crop_display' frame.video.id frame.frameNum %}'" class="btn btn-primary mt-3 not-visible" id="new-prev-btn">New Frame</button>
   <button class="btn btn-primary mt-3 not-visible" id="confirm-btn">Confirm</button>
   <button class="btn btn-primary mt-3 not-visible" id="reject-btn">reject</button>
 </div>

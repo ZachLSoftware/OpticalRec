@@ -14,17 +14,19 @@ from opticalrec.settings import MEDIA_ROOT
 import os
 
 
-def videoIntoFrames(vid):
+def videoIntoFrames(vid,label):
     videoFile=vid.videoFile.path
     user=vid.user
     count = 0
-    crop=videoResize.objects.get(video_id=vid.id)
+    crop=videoResize.objects.get(video_id=vid.id, label=label)
     user_folder = str(MEDIA_ROOT) + "/frames/" + str(user.username)
     video_folder = "/" + str(vid.id)
     if not os.path.isdir(user_folder):
         os.mkdir(user_folder)
     if not os.path.isdir(user_folder + video_folder):
         os.mkdir(user_folder+video_folder)
+    if not os.path.isdir(user_folder + video_folder + '/' + crop.label):
+        os.mkdir(user_folder+video_folder + '/' + crop.label)
     if Frame.objects.filter(video_id=vid.id).exists() and Frame.objects.filter(frameFile__contains='/frame0.jpg').exists():
         return "already exists"
     cap = cv2.VideoCapture(videoFile)   # capturing the video from the given path
@@ -37,13 +39,14 @@ def videoIntoFrames(vid):
             break
         if (frameId % math.floor(frameRate) == 0):
             cframe=frame[round(crop.y1*crop.nat_height):round(crop.y2*crop.nat_height), round(crop.x1*crop.nat_width):round(crop.x2*crop.nat_width)]
-            filename ="frames/%s/%d/%s_frame%d.jpg" % (user.username,vid.id, crop.label, count)
+            filename ="frames/%s/%d/%s/%s_frame%d.jpg" % (user.username,vid.id, crop.label, crop.label, count)
             cv2.imwrite(str(MEDIA_ROOT) + "/" + filename, cframe)
             f=Frame()
             f.video=vid
             f.user=user
             f.frameFile.name=filename
-            f.frameNum=count
+            f.frameNum=cap.get(cv2.CAP_PROP_POS_FRAMES)
+            f.timeStamp=(cap.get(cv2.CAP_PROP_POS_MSEC)/1000)
             f.save()
             
             count+=1
