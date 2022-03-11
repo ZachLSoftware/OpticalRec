@@ -49,7 +49,7 @@ def delete_video(request, vid_id):
 @login_required
 def dashboard(request):
     context={
-        'videos' : []
+        'videos': {} 
     }
     unsortedData = ExtractedData.objects.filter(user=request.user).order_by('-video_id')
     videos={}
@@ -75,7 +75,7 @@ def dashboard(request):
                         if data.label==label:
                             l[label].append(data)
     for vid in videos.keys():
-        context['videos'].append(Video.objects.get(id=vid).name)
+        context['videos'][vid]=Video.objects.get(id=vid).name
     context['data']=videos
     return render(request,"dashboard.html", context)
 
