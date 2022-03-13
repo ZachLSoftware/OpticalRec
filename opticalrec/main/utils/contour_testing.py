@@ -6,11 +6,11 @@ import sys
 
 import numpy as np
 import cv2
-import easygui
+
 import os
 
 
-image = cv2.imread()
+image = cv2.imread(r'C:\Users\zacha\Documents\project_folder\group-10\opticalrec\media\frames\zach\515286401191\OppHealth\OppHealth_frame0.jpg')
 img = image.copy()
 gray = cv2.cvtColor(img,cv2.COLOR_BGR2GRAY)
 blur = cv2.GaussianBlur(gray,(5,5),0)
@@ -31,9 +31,17 @@ keys = [i for i in range(48,58)]
 
 cv2.destroyAllWindows()
 for cnt in contours:
-    if cv2.contourArea(cnt)/area>.01 and cv2.contourArea(cnt)/area<.022:
+    if cv2.contourArea(cnt)>100 and cv2.contourArea(cnt)<400:
         [x,y,w,h] = cv2.boundingRect(cnt)
+
+        
         if h>18:
+            x-=3
+            y-=3
+            w+=6
+            h+=6
+            print(w,h)
+            #print(area)
             #print(approx)
             print(cv2.contourArea(cnt))
             cv2.drawContours(img,[cnt], 0, (36,255,12), 3)
@@ -41,8 +49,12 @@ for cnt in contours:
             cv2.imshow('img', img)
             cv2.waitKey()
             cv2.destroyAllWindows
+            cropped=img[y:y+h, x:x+w]
+            cv2.imshow('crop',cropped)
+            cv2.waitKey()
+            cv2.destroyAllWindows
 
 mask=cv2.bitwise_and(mask, img)
 
-cv2.imshow('mask', mask)
-cv2.waitKey()
+#cv2.imshow('mask', mask)
+#cv2.waitKey()
