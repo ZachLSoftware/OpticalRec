@@ -38,9 +38,10 @@ def videoIntoFrames(vid,label):
         ret, frame = cap.read()
         if (ret != True):
             break
-        if (frameId % math.floor(frameRate) == 0):
+        if (frameId % math.floor(frameRate) == 0) and frameId % 4 == 0:
             cframe=frame[round(crop.y1*crop.nat_height):round(crop.y2*crop.nat_height), round(crop.x1*crop.nat_width):round(crop.x2*crop.nat_width)]
             filename ="frames/%s/%d/%s/%s_frame%d.jpg" % (user.username,vid.id, crop.label, crop.label, count)
+            cframe=cv2.cvtColor(cframe, cv2.COLOR_BGR2GRAY)
             cv2.imwrite(str(MEDIA_ROOT) + "/" + filename, cframe)
             f=Frame()
             f.video=vid
