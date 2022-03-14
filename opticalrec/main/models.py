@@ -1,3 +1,4 @@
+from tkinter import CASCADE
 from django.db import models
 from .validators import *
 from django_random_id_model import RandomIDModel
@@ -22,8 +23,12 @@ class Video(RandomIDModel):
         self.videoFile="Deleted"
         self.save()
 
+class Label(RandomIDModel):
+    name=models.TextField(max_length=500)
+    video=models.ForeignKey(Video, on_delete=models.CASCADE)
+
 class videoResize(models.Model):
-    label = models.CharField(max_length=500)
+    label=models.TextField(max_length=(100))
     video=models.ForeignKey(Video, on_delete=models.CASCADE)
     x1=models.FloatField(null=True)
     y1=models.FloatField(null=True)
@@ -37,6 +42,7 @@ class videoResize(models.Model):
 class Frame(models.Model):
     video=models.ForeignKey(Video, on_delete=models.CASCADE)
     #user=models.ForeignKey(User, on_delete=models.CASCADE)
+    label=models.ForeignKey(Label, on_delete=models.CASCADE, null=True)
     frameFile=models.ImageField(blank=True)
     frameNum=models.IntegerField()
     timeStamp=models.FloatField(null=True)
@@ -45,12 +51,10 @@ class Frame(models.Model):
         self.frameFile.delete()
         super().delete()
 
-
-
 class ExtractedData(models.Model):
     video=models.ForeignKey(Video, on_delete=models.CASCADE)
     user=models.ForeignKey(User, on_delete=models.CASCADE)
-    label=models.TextField(max_length=500)
+    label=models.ForeignKey(Label, on_delete=models.CASCADE)
     timeStamp=models.FloatField()
     value=models.IntegerField()
     valueChange=models.IntegerField()

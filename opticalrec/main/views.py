@@ -4,6 +4,7 @@ from .forms import *
 from pathlib import Path
 from .utils.Upload import videoIntoFrames
 from .utils.preview_frame import preview_frame
+from .utils.predict_data import eval_data
 from main.models import Frame
 from django.urls import reverse
 from opticalrec.settings import MEDIA_ROOT
@@ -57,22 +58,22 @@ def dashboard(request):
         if data.video_id not in videos:
             videos[data.video_id]=[]
         if not videos[data.video_id]:
-            videos[data.video_id].append({data.label: []})
+            videos[data.video_id].append({data.label.name: []})
         else:
             label_test=False 
             for vid in videos[data.video_id]:
-                if data.label in vid:
+                if data.label.name in vid:
                     label_test=True
                     break
             if not label_test:
-                videos[data.video_id].append({data.label:[]})
+                videos[data.video_id].append({data.label.name:[]})
 
     for vid in videos.keys():
         for data in unsortedData:
             if data.video_id==vid:
                 for l in videos[vid]:
                     for label in l.keys():
-                        if data.label==label:
+                        if data.label.name==label:
                             l[label].append(data)
     for vid in videos.keys():
         context['videos'][vid]=Video.objects.get(id=vid).name
@@ -98,13 +99,17 @@ def video_crop_display(request, vid_id, frame_num=None):
         if form.is_valid():
             object = form.save(commit=False)
             object.video=obj
-            if videoResize.objects.filter(video_id=object.video_id).filter(label=object.label).exists():
+            if Label.objects.filter(video_id=object.video_id).filter(name=object.label).exists():
                 response = {'status': 1, 'message': ("A label of this type already exists for this video")}
                 return HttpResponse(json.dumps(response), content_type='application/json')
             object.x2=(object.x1+object.width)/object.nat_width
             object.y2=(object.y1+object.height)/object.nat_height
             object.x1=object.x1/object.nat_width
             object.y1=object.y1/object.nat_height
+            lab=Label()
+            lab.name=object.label
+            lab.video=obj
+            lab.save()
             object.save()
             response = {'status': 0, 'url':"/main/import_video_tensor/"+str(obj.id)+"/" + object.label, 'message': ("succesful")}
             return HttpResponse(json.dumps(response), content_type='application/json')
@@ -137,3 +142,7 @@ def register(request):
     else:
         form = UserCreationForm()
     return render(request, 'register.html', {'form': form})
+
+def extractData(request, label_id):
+    eval_data(label_id)
+    return redirect(dashboard)
