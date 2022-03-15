@@ -53,6 +53,7 @@ class Frame(models.Model):
 
 class ExtractedData(models.Model):
     video=models.ForeignKey(Video, on_delete=models.CASCADE)
+    frame=models.ForeignKey(Frame, on_delete=models.CASCADE)
     user=models.ForeignKey(User, on_delete=models.CASCADE)
     label=models.ForeignKey(Label, on_delete=models.CASCADE)
     timeStamp=models.FloatField()

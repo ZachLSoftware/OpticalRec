@@ -1,26 +1,39 @@
 {% extends "base_template.html" %}
 {% block title %}<title>List</title>{% endblock %}
+{% block js %}
+{% load static %}
+<script type="text/javascript" src="{% static 'javascript/table_view.js' %}" defer></script>
+{% endblock %}
 {%block content %}
 <h1>Video List</h1>
 {% if user.is_authenticated %}
-{% for vid in vids %}
-<table class="video_list">
-    <tr>
-        <td>
-            <h2><strong>{{ vid.name }}</strong></h2>
-        </td>
-        <td>
-            <a href="{% url 'video_crop_display' vid.id %}">Select Data</a>
-        </td>
-        <td>
-            <a href="{% url 'delete_video' vid.id %}">Delete Video</a>
-        </td>
-    </tr>
-</table>
-
-{% empty %}
+<div class='row justify-content-center g-0 mx-0'>
+    {% for vid in videos %}
+    <div class='col-2' style="width:auto; padding: 5px">
+    <button onclick='toggleView("div.{{vid.id}}")' class="btn btn-primary mt-3 dashboard level-1" id="{{vid.id}}">{{vid.name}}</button> <br/>
+    </div>
+    {% empty %}
     <h2>No Videos Found</h2>
-{% endfor %}
+    {% endfor %}
+  </div>
+
+  {% for vid in videos %}
+  <div class='row justify-content-center g-0 mx-0 collapse level-1 dashboard' id='div.{{vid.id}}'>
+    <h2 style="text-align:center">{{vid.name}}</h2>
+    <div class='col-2' style="width:auto; padding: 5px">
+        <a href="{% url 'video_crop_display' vid.id %}" class="btn btn-secondary">Select Data</a>
+        <a href="{% url 'delete_video' vid.id %}" class="btn btn-secondary">Delete Video</a>
+    {% for i in labels%}
+        {% if i.video_id == vid.id %}
+        <a href="{% url 'extract_data' i.id %}" class="btn btn-secondary">Extract {{i.name}}</a>
+      
+      {% endif %}
+    
+      {% endfor %}
+    </div>
+    </div>
+    {% endfor %}
+
 
 {% else %}
 <p><a href="{% url 'profile' %}">You need to be logged in</a></p>

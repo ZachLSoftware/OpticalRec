@@ -38,8 +38,14 @@ def video_upload(request):
 
 @login_required
 def list_videos(request):
+    context={}
     vids=Video.objects.filter(user=request.user).exclude(videoFile="Deleted").order_by('-uploadedAt')
-    return render(request, 'vid_list.html', {'vids':vids})
+    context['videos']=vids
+    labels=[]
+    for vid in vids:
+        labels+=Label.objects.filter(video_id=vid.id)
+    context['labels']=labels
+    return render(request, 'vid_list.html', context)
 
 @login_required
 def delete_video(request, vid_id):
@@ -144,5 +150,6 @@ def register(request):
     return render(request, 'register.html', {'form': form})
 
 def extractData(request, label_id):
-    eval_data(label_id)
+    if(not ExtractedData.objects.filter(label_id=label_id).exists()):
+        eval_data(label_id)
     return redirect(dashboard)
