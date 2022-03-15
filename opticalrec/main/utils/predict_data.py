@@ -11,20 +11,20 @@ from opticalrec.settings import MEDIA_ROOT, BASE_DIR
 import json
 
 
-f=open(os.path.join(BASE_DIR,'main/utils/class_names.dat'), 'r')
-class_names=json.loads(f.read())
+f=open(os.path.join(BASE_DIR,'main/utils/model_attr.json'))
+model_attr=json.loads(f.read())
 f.close()
-print(class_names)
-model = tf.keras.models.load_model(os.path.join(BASE_DIR,'main/utils/grayscale.h5'))
-
+class_names=model_attr['class_names']
+model = tf.keras.models.load_model(os.path.join(BASE_DIR, (model_attr['model'])))
+img_height=model_attr['img_height']
+img_width=model_attr['img_width']
+color=model_attr['color_mode']
 
 def predict(img_path):
     
-    img_height = 180
-    img_width = 180
  
     img = tf.keras.utils.load_img(
-    img_path, target_size=(img_height, img_width), color_mode="grayscale"
+    img_path, target_size=(img_height, img_width), color_mode=color
     )
     img_array = tf.keras.utils.img_to_array(img)
     img_array = tf.expand_dims(img_array, 0) # Create a batch
@@ -55,6 +55,7 @@ def eval_data(label):
             if prev==None:
                 prev=current
                 exd=ExtractedData()
+                exd.frame=f
                 exd.video=f.video
                 exd.label=f.label
                 exd.user=f.video.user
@@ -65,12 +66,20 @@ def eval_data(label):
             elif prev==current:
                 continue
             else:
-                exd=ExtractedData()
-                exd.video=f.video
-                exd.label=f.label
-                exd.user=f.video.user
-                exd.value=current
-                exd.valueChange=int(prev)-int(current)
-                exd.timeStamp=f.timeStamp
-                exd.save()
-                prev=current
+                nextframe=Frame.objects.get(label_id=label, timeStamp=f.timeStamp+1)
+                #twoframe=Frame.objects.get(label_id=label, timeStamp=f.timeStamp+2)
+                next=predict(str(os.path.join(MEDIA_ROOT,str(nextframe.frameFile))))
+                #two=predict(str(os.path.join(MEDIA_ROOT,str(twoframe.frameFile))))
+                if next==current:
+                    exd=ExtractedData()
+                    exd.frame=f
+                    exd.video=f.video
+                    exd.label=f.label
+                    exd.user=f.video.user
+                    exd.value=current
+                    exd.valueChange=int(current)-int(prev)
+                    exd.timeStamp=f.timeStamp
+                    exd.save()
+                    prev=current
+                else:
+                    continue
