@@ -14,7 +14,7 @@ from tensorflow.keras.models import Sequential
 
 
 
-data_dir=r'C:\Users\zacha\Desktop\one'
+data_dir=r'C:\Users\zacha\Desktop\additional'
 #data_dir=r'C:\Users\zacha\OneDrive - University of Leicester\Year 2\CO2201\Group_10\Training\data\Zoom'
 #valid_dir= pathlib.Path(valid_dir)
 data_dir = pathlib.Path(data_dir)
@@ -67,31 +67,7 @@ first_image = image_batch[0]
 
 num_classes = len(class_names)
 
-data_augmentation = keras.Sequential(
-  [
-    layers.RandomZoom(0.1),
-  ]
-)
-
-model = Sequential([
-  data_augmentation,
-  layers.Rescaling(1./255),
-  layers.Conv2D(16, 3, padding='same', activation='relu'),
-  layers.MaxPooling2D(),
-  layers.Conv2D(32, 3, padding='same', activation='relu'),
-  layers.MaxPooling2D(),
-  layers.Conv2D(64, 3, padding='same', activation='relu'),
-  layers.MaxPooling2D(),
-  layers.Dropout(0.2),
-  layers.Flatten(),
-  layers.Dense(128, activation='relu'),
-  layers.Dense(num_classes)
-])
-
-model.compile(optimizer='adam',
-              loss=tf.keras.losses.SparseCategoricalCrossentropy(from_logits=True),
-              metrics=['accuracy'])
-
+model=tf.keras.models.load_model(r'C:\Users\zacha\OneDrive - University of Leicester\Year 2\CO2201\Group_10\Training\grayscale_new.h5')
 
 epochs=20
 history = model.fit(
@@ -107,7 +83,7 @@ loss = history.history['loss']
 val_loss = history.history['val_loss']
 
 epochs_range = range(epochs)
-model.save(r'C:\Users\zacha\OneDrive - University of Leicester\Year 2\CO2201\Group_10\Training\small.h5')
+model.save(r'C:\Users\zacha\OneDrive - University of Leicester\Year 2\CO2201\Group_10\Training\grayscale_add.h5')
 plt.figure(figsize=(8, 8))
 plt.subplot(1, 2, 1)
 plt.plot(epochs_range, acc, label='Training Accuracy')

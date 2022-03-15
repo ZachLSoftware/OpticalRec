@@ -11,8 +11,8 @@ from tensorflow.keras import layers
 from tensorflow.keras.models import Sequential
 
 def predict(img_path):
-    class_names=['0', '1', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '2', '20', '21', '22', '23', '24', '25', '26', '27', '28', '29', '3', '30', '31', '4', '5', '6', '7', '8', '9', 'covered', 'done', 'none'] 
-    new_model = tf.keras.models.load_model(r'grayscale.h5')
+    class_names=["0", "1", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "2", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "3", "30", "31", "4", "5", "6", "7", "8", "9", "none"]
+    new_model = tf.keras.models.load_model(r'C:\Users\zacha\OneDrive - University of Leicester\Year 2\CO2201\Group_10\Training\grayscale_add.h5')
     
 
     img_height = 180
@@ -29,6 +29,7 @@ def predict(img_path):
     score = tf.nn.softmax(prediction[0])
     classes=prediction.argmax(axis=-1)
     print(class_names[np.argmax(prediction)])
+    print(np.argmax(prediction))
     print(prediction.argmax(axis=-1))
 
     print(
@@ -42,9 +43,9 @@ def predict(img_path):
 from os import listdir
 from os.path import isfile, join
 
-mypath = r'C:\Users\zacha\OneDrive - University of Leicester\Year 2\CO2201\Group_10\Training\test'
+mypath = r'C:\Users\zacha\Documents\Group_Project\group-10\opticalrec\media\frames\zach\393912236526\Good_Extraction'
 save = r'C:\Users\zacha\OneDrive - University of Leicester\Year 2\CO2201\Group_10\Training'
 used = r'C:\Users\zacha\OneDrive - University of Leicester\Year 2\CO2201\Group_10\Training\used/'
 onlyfiles = [f for f in listdir(mypath) if isfile(join(mypath, f))]
 for f in onlyfiles:
-    predict(mypath+ '/' + f)
+    predict(r'C:\Users\zacha\Documents\Group_Project\group-10\opticalrec\media\frames\zach\243557275636\OppHealth\OppHealth_frame15121.jpg')
