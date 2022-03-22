@@ -154,6 +154,14 @@ def register(request):
         form = UserCreationForm()
     return render(request, 'register.html', {'form': form})
 
+def extractAllData(request, vid_id):
+    labels=Label.objects.filter(video_id=vid_id)
+    for label in labels:
+        if(not ExtractedData.objects.filter(label_id=label.id).exists()):
+            eval_data(label.id)
+    return redirect(dashboard)
+
+
 def extractData(request, label_id):
     if(not ExtractedData.objects.filter(label_id=label_id).exists()):
         eval_data(label_id)

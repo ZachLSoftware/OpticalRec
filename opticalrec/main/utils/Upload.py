@@ -54,7 +54,7 @@ def videoIntoFrames(vid):
                 #f.user=user
                 f.frameFile.name=filename
                 f.frameNum=cap.get(cv2.CAP_PROP_POS_FRAMES)
-                f.timeStamp=(cap.get(cv2.CAP_PROP_POS_MSEC)/1000)
+                f.timeStamp=round((cap.get(cv2.CAP_PROP_POS_MSEC)/1000))
                 f.save()
 
             

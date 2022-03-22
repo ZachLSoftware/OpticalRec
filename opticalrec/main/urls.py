@@ -17,6 +17,7 @@ urlpatterns = [
     path('login', auth_views.LoginView.as_view(template_name = 'login.html'), name = 'login'),
     path('logout', auth_views.LogoutView.as_view(template_name = 'logout.html'), name = 'logout'),
     path('register', views.register, name = 'register'),
+    path('extract_all_data/<int:vid_id>', views.extractAllData, name= 'extract_all_data'),
     path('extract_data/<int:label_id>', views.extractData, name= 'extract_data'),
 
 ]
