@@ -4,6 +4,8 @@ const confirmBtn = document.getElementById('confirm-btn')
 const cropBtn = document.getElementById('crop-btn')
 const prevBtn = document.getElementById('new-prev-btn')
 const rejectBtn = document.getElementById('reject-btn')
+const finishBtn = document.getElementById('fin-btn')
+const cnFinBtn = document.getElementById('cnf-fin-btn')
 const hideImage = document.getElementById('hide-image')
 const labelForm = document.getElementById('label-form')
 const csrf = document.getElementsByName('csrfmiddlewaretoken')
@@ -11,10 +13,10 @@ const replace = document.getElementById('replace');
 
 window.addEventListener('DOMContentLoaded', function () {
     cropBtn.classList.remove('not-visible');
+    finishBtn.classList.remove('not-visible');
     prevBtn.classList.remove('not-visible');
     var image = document.querySelector('#image');
     var image = document.getElementById('image');
-
 
     var cropper = new Cropper(image, {
         autoCropArea: .25
@@ -23,10 +25,12 @@ window.addEventListener('DOMContentLoaded', function () {
     cropBtn.addEventListener('click', ()=>{
         labelForm.classList.remove('not-visible');
         cropBtn.classList.add('not-visible');
+        finishBtn.classList.add('not-visible')
         prevBtn.classList.add('not-visible');
         hideImage.classList.add('not-visible');
         rejectBtn.classList.remove('not-visible');
         confirmBtn.classList.remove('not-visible');
+        cnFinBtn.classList.remove('not-visible');
         replace.appendChild(cropper.getCroppedCanvas());
     })
 
@@ -35,9 +39,24 @@ window.addEventListener('DOMContentLoaded', function () {
         labelForm.classList.add('not-visible');
         hideImage.classList.remove('not-visible');
         cropBtn.classList.remove('not-visible');
+        finishBtn.classList.remove('not-visible');
         prevBtn.classList.remove('not-visible');
         rejectBtn.classList.add('not-visible');
         confirmBtn.classList.add('not-visible');
+        cnFinBtn.classList.add('not-visible');
+    })
+
+    cnFinBtn.addEventListener('click', ()=>{
+        if (isNaN(document.getElementById("label").value ) && document.getElementById("label").value != ""){
+            var temp = document.getElementById('crop-form');
+            var url = temp.getAttribute('action')
+            var newUrl= url.concat("/0/1");
+            temp.action=newUrl;
+            sendData();
+        }
+        else{
+            document.getElementById("error").innerHTML="Please enter a valid text Label";
+        }
     })
 
     confirmBtn.addEventListener('click', ()=>{

@@ -42,8 +42,10 @@
   
   <button class="btn btn-primary mt-3 not-visible" id="crop-btn">Crop</button>
   <button onclick="location.href='{% url 'video_crop_display' frame.video.id frame.frameNum %}'" class="btn btn-primary mt-3 not-visible" id="new-prev-btn">New Frame</button>
+  <button onclick="location.href='{% url 'import_video_tensor' frame.video.id %}'" class="btn btn-primary mt-3 not-visible" id="fin-btn">Finish</button>
   <button class="btn btn-primary mt-3 not-visible" id="confirm-btn">Confirm</button>
-  <button class="btn btn-primary mt-3 not-visible" id="reject-btn">reject</button>
+  <button class="btn btn-primary mt-3 not-visible" id="cnf-fin-btn">Finish</button>
+  <button class="btn btn-primary mt-3 not-visible" id="reject-btn">Reject</button>
 </div>
 <script src="{% static 'javascript/crop_image.js' %}"></script>
 {% endblock %}
