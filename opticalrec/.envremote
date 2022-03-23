@@ -1,5 +1,0 @@
-SECRET_KEY = 'django-insecure-6q2g_x75$-8@jt117wil7=ebn+r$0sqoevr-e+!^bimvwpl&6q'
-DB_NAME=dev_db
-DB_USER=dev_user
-DB_PASSWORD=26tqAFSAPs7fVaH*b8*6
-DB_HOST=94.177.250.193

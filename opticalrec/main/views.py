@@ -87,9 +87,9 @@ def dashboard(request):
     return render(request,"dashboard.html", context)
 
 @login_required
-def import_video_tensor(request, vid_id, label):
+def import_video_tensor(request, vid_id):
     obj=Video.objects.get(id=vid_id)
-    videoIntoFrames(obj, label)
+    videoIntoFrames(obj)
     return redirect(list_videos)
 
 @login_required
@@ -98,7 +98,7 @@ def framelist(request):
     return render(request,"frame_list.html", {"frames":frames})
 
 @login_required
-def video_crop_display(request, vid_id, frame_num=None):
+def video_crop_display(request, vid_id, frame_num=0, finish=0):
     obj=Video.objects.get(id=vid_id)
     if request.method == 'POST':
         form = VideoResizeForm(request.POST, request.FILES)
@@ -117,14 +117,19 @@ def video_crop_display(request, vid_id, frame_num=None):
             lab.video=obj
             lab.save()
             object.save()
-            response = {'status': 0, 'url':"/main/import_video_tensor/"+str(obj.id)+"/" + object.label, 'message': ("succesful")}
-            return HttpResponse(json.dumps(response), content_type='application/json')
+            if finish==1:
+                response = {'status': 0, 'url':"/main/import_video_tensor/"+str(obj.id), 'message': ("succesful")}
+                return HttpResponse(json.dumps(response), content_type='application/json')
+            else:
+                response = {'status': 0, 'url':"/main/video_crop_display/" + str(vid_id) + '/' + str(frame_num), 'message': ("succesful")}
+                return HttpResponse(json.dumps(response), content_type='application/json')
+
         else:
             response = {'status': 1, 'message': ("Issue Processing Form")}
             return HttpResponse(json.dumps(response), content_type='application/json')
     else:
         form = VideoResizeForm()
-        if frame_num!=None:
+        if frame_num!=0:
             Frame.objects.get(video_id=obj.id, frameFile__contains="previewFrame").delete()
             frame_num+=50
         else:
@@ -148,6 +153,14 @@ def register(request):
     else:
         form = UserCreationForm()
     return render(request, 'register.html', {'form': form})
+
+def extractAllData(request, vid_id):
+    labels=Label.objects.filter(video_id=vid_id)
+    for label in labels:
+        if(not ExtractedData.objects.filter(label_id=label.id).exists()):
+            eval_data(label.id)
+    return redirect(dashboard)
+
 
 def extractData(request, label_id):
     if(not ExtractedData.objects.filter(label_id=label_id).exists()):

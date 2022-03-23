@@ -22,6 +22,7 @@
     <h2 style="text-align:center">{{vid.name}}</h2>
     <div class='col-2' style="width:auto; padding: 5px">
         <a href="{% url 'video_crop_display' vid.id %}" class="btn btn-secondary">Select Data</a>
+        <a href="{% url 'extract_all_data' vid.id %}" class="btn btn-secondary">Extract All</a>
         <a href="{% url 'delete_video' vid.id %}" class="btn btn-secondary">Delete Video</a>
     {% for i in labels%}
         {% if i.video_id == vid.id %}
