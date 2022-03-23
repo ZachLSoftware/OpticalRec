@@ -8,6 +8,7 @@ import uuid
 
 class User(AbstractUser):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    theme = models.CharField(max_length=20)
 
 class Video(RandomIDModel):
     name= models.CharField(max_length=500)
