@@ -55,11 +55,9 @@ def list_videos(request):
 
 @login_required
 def delete_video(request, vid_id):
-    context={}
-    context['template']=getTemplate(request)
     obj=Video.objects.get(id=vid_id)
     obj.delete()
-    return redirect(list_videos, context)
+    return redirect(list_videos)
 
 @login_required
 def dashboard(request):
@@ -97,11 +95,9 @@ def dashboard(request):
 
 @login_required
 def import_video_tensor(request, vid_id):
-    context={}
-    context['template']=getTemplate(request)
     obj=Video.objects.get(id=vid_id)
     videoIntoFrames(obj)
-    return redirect(list_videos,context)
+    return redirect(list_videos)
 
 @login_required
 def framelist(request):
@@ -151,8 +147,8 @@ def video_crop_display(request, vid_id, frame_num=0, finish=0):
             frame_num=0
         f=preview_frame(obj,frame_num)
         context['template']=getTemplate(request)
-        context['frame': f]
-        context['form': form]
+        context['frame']=f
+        context['form']=form
         return render(request, 'video_crop.html', context)
 
 def profile(request):
@@ -177,21 +173,17 @@ def register(request):
     return render(request, 'register.html', context)
 
 def extractAllData(request, vid_id):
-    context={}
-    context['template']=getTemplate(request)
     labels=Label.objects.filter(video_id=vid_id)
     for label in labels:
         if(not ExtractedData.objects.filter(label_id=label.id).exists()):
             eval_data(label.id)
-    return redirect(dashboard, context)
+    return redirect(dashboard)
 
 
 def extractData(request, label_id):
-    context={}
-    context['template']=getTemplate(request)
     if(not ExtractedData.objects.filter(label_id=label_id).exists()):
         eval_data(label_id)
-    return redirect(dashboard, context)
+    return redirect(dashboard)
 
 @login_required
 def toggleTheme(request, theme):
