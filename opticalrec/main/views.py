@@ -17,6 +17,7 @@ import os
 import cv2
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib import messages
+import csv
 
 # Create your views here.
 def index(request):
@@ -191,3 +192,16 @@ def toggleTheme(request, theme):
     context={}
     context['template']=getTemplate(request)
     return redirect(request.META['HTTP_REFERER'], context)
+def exportToCSV(request):
+    response = HttpResponse(content_type='text/csv')
+
+    writer = csv.writer(response)
+    writer.writerow(['Video','Frame','User','Label','Timestamp','Value', 'Difference'])
+
+    for data in ExtractedData.objects.filter(user=request.user).all():
+        datalist=(data.video.name, data.frame.frameNum, data.user.username, data.label.name, data.timeStamp, data.value, data.valueChange)
+        writer.writerow(datalist)
+
+    response['Content-Disposition'] = 'attachment; filename="data.csv"'
+
+    return response
