@@ -12,9 +12,7 @@ const csrf = document.getElementsByName('csrfmiddlewaretoken')
 const replace = document.getElementById('replace');
 
 window.addEventListener('DOMContentLoaded', function () {
-    cropBtn.classList.remove('not-visible');
-    finishBtn.classList.remove('not-visible');
-    prevBtn.classList.remove('not-visible');
+    document.getElementById("before_crop").classList.add("show")
     var image = document.querySelector('#image');
     var image = document.getElementById('image');
 
@@ -23,27 +21,17 @@ window.addEventListener('DOMContentLoaded', function () {
     });
 
     cropBtn.addEventListener('click', ()=>{
-        labelForm.classList.remove('not-visible');
-        cropBtn.classList.add('not-visible');
-        finishBtn.classList.add('not-visible')
-        prevBtn.classList.add('not-visible');
-        hideImage.classList.add('not-visible');
-        rejectBtn.classList.remove('not-visible');
-        confirmBtn.classList.remove('not-visible');
-        cnFinBtn.classList.remove('not-visible');
+        document.getElementById("before_crop").classList.remove("show")
+        document.getElementById("after_crop").classList.add("show")
+        hideImage.classList.remove("show")
         replace.appendChild(cropper.getCroppedCanvas());
     })
 
     rejectBtn.addEventListener('click', ()=>{
         replace.innerHTML = '';
-        labelForm.classList.add('not-visible');
-        hideImage.classList.remove('not-visible');
-        cropBtn.classList.remove('not-visible');
-        finishBtn.classList.remove('not-visible');
-        prevBtn.classList.remove('not-visible');
-        rejectBtn.classList.add('not-visible');
-        confirmBtn.classList.add('not-visible');
-        cnFinBtn.classList.add('not-visible');
+        document.getElementById("before_crop").classList.add("show")
+        document.getElementById("after_crop").classList.remove("show")
+        hideImage.classList.add("show")
     })
 
     cnFinBtn.addEventListener('click', ()=>{

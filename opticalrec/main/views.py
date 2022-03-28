@@ -1,10 +1,12 @@
 from django.shortcuts import render, redirect
+from matplotlib.style import context
 from .models import *
 from .forms import *
 from pathlib import Path
 from .utils.Upload import videoIntoFrames
 from .utils.preview_frame import preview_frame
 from .utils.predict_data import eval_data
+from .utils.template import getTemplate
 from main.models import Frame
 from django.urls import reverse
 from opticalrec.settings import MEDIA_ROOT
@@ -15,13 +17,17 @@ import os
 import cv2
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib import messages
+import csv
 
 # Create your views here.
 def index(request):
-    return render(request, "index.html")
+    context={}
+    context['template']=getTemplate(request)
+    return render(request, "index.html", context)
 
 @login_required
 def video_upload(request):
+    context={}
     if request.method == 'POST':
         form = VideoForm(request.POST, request.FILES)
         if form.is_valid():
@@ -32,9 +38,9 @@ def video_upload(request):
             return redirect(reverse('video_crop_display', kwargs={"vid_id":object.id}))
     else:
         form = VideoForm()
-    return render(request, 'video_upload.html', {
-        'form': form
-    })
+        context['form']=form
+    context['template']=getTemplate(request)
+    return render(request, 'video_upload.html', context)
 
 @login_required
 def list_videos(request):
@@ -45,6 +51,7 @@ def list_videos(request):
     for vid in vids:
         labels+=Label.objects.filter(video_id=vid.id)
     context['labels']=labels
+    context['template']=getTemplate(request)
     return render(request, 'vid_list.html', context)
 
 @login_required
@@ -84,6 +91,7 @@ def dashboard(request):
     for vid in videos.keys():
         context['videos'][vid]=Video.objects.get(id=vid).name
     context['data']=videos
+    context['template']=getTemplate(request)
     return render(request,"dashboard.html", context)
 
 @login_required
@@ -94,11 +102,15 @@ def import_video_tensor(request, vid_id):
 
 @login_required
 def framelist(request):
+    context={}
+    context['template']=getTemplate(request)
     frames=Frame.objects.all()
-    return render(request,"frame_list.html", {"frames":frames})
+    context['frames',frames]
+    return render(request,"frame_list.html", context)
 
 @login_required
 def video_crop_display(request, vid_id, frame_num=0, finish=0):
+    context={}
     obj=Video.objects.get(id=vid_id)
     if request.method == 'POST':
         form = VideoResizeForm(request.POST, request.FILES)
@@ -135,24 +147,31 @@ def video_crop_display(request, vid_id, frame_num=0, finish=0):
         else:
             frame_num=0
         f=preview_frame(obj,frame_num)
-    
-        return render(request, 'video_crop.html', {'frame':f, 'form':form})
+        context['template']=getTemplate(request)
+        context['frame']=f
+        context['form']=form
+        return render(request, 'video_crop.html', context)
 
 def profile(request):
-    return render(request, 'profile.html')
+    context={}
+    context['template']=getTemplate(request)
+    return render(request, 'profile.html', context)
 
 
 def register(request):
+    context={}
+    context['template']=getTemplate(request)
     if request.method == "POST":
         form = CreateUser(request.POST)
         if form.is_valid():
             form.save()
             username = form.cleaned_data.get('username')
             messages.success(request, f"{username}'s account created.")
-            return redirect('login')
+            return redirect('login', context)
     else:
         form = UserCreationForm()
-    return render(request, 'register.html', {'form': form})
+        context['form']=form
+    return render(request, 'register.html', context)
 
 def extractAllData(request, vid_id):
     labels=Label.objects.filter(video_id=vid_id)
@@ -166,3 +185,23 @@ def extractData(request, label_id):
     if(not ExtractedData.objects.filter(label_id=label_id).exists()):
         eval_data(label_id)
     return redirect(dashboard)
+
+@login_required
+def toggleTheme(request, theme):
+    User.objects.filter(id=request.user.id).update(theme=theme)
+    context={}
+    context['template']=getTemplate(request)
+    return redirect(request.META['HTTP_REFERER'], context)
+def exportToCSV(request):
+    response = HttpResponse(content_type='text/csv')
+
+    writer = csv.writer(response)
+    writer.writerow(['Video','Frame','User','Label','Timestamp','Value', 'Difference'])
+
+    for data in ExtractedData.objects.filter(user=request.user).all():
+        datalist=(data.video.name, data.frame.frameNum, data.user.username, data.label.name, data.timeStamp, data.value, data.valueChange)
+        writer.writerow(datalist)
+
+    response['Content-Disposition'] = 'attachment; filename="data.csv"'
+
+    return response

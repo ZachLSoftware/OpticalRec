@@ -1,15 +1,16 @@
-{% extends "base_template.html" %}
+{% extends template %}
 {% block title %}<title>Upload</title>{% endblock %}
 {% block content %}
-<h1>Upload</h1>
+<h1 style="text-align:center;">Upload</h1>
   {% if user.is_authenticated %}
+  <div class="d-flex justify-content-center">
     <form method="post" enctype="multipart/form-data">
       {% csrf_token %}
       {{ form.as_p }}
-      <button type="submit">Upload</button>
+      <button class="btn btn-primary" type="submit">Upload</button>
     </form>
+  </div>
   {% else %}
     <p><a href="{% url 'profile' %}">You need to be logged in</a></p>
   {% endif %}
-    <p><a href="{% url 'index' %}">Return to home</a></p>
 {% endblock %}

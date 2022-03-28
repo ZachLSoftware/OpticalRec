@@ -1,11 +1,11 @@
-{% extends "base_template.html" %}
+{% extends template %}
 {% block title %}<title>List</title>{% endblock %}
 {% block js %}
 {% load static %}
 <script type="text/javascript" src="{% static 'javascript/table_view.js' %}" defer></script>
 {% endblock %}
 {%block content %}
-<h1>Video List</h1>
+<h1 style="text-align: center;">Video List</h1>
 {% if user.is_authenticated %}
 <div class='row justify-content-center g-0 mx-0'>
     {% for vid in videos %}
@@ -39,5 +39,4 @@
 {% else %}
 <p><a href="{% url 'profile' %}">You need to be logged in</a></p>
 {% endif %}
-  <p><a href="{% url 'index' %}">Return to home</a></p>
 {% endblock %}
