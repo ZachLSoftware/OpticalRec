@@ -70,8 +70,6 @@
     <h2>No Data Found</h2>
     {% endfor %}
 
-    <a href="{% url 'export_users_csv' %}">Export database to CSV</a>
-
   </div>
 {% else %}
   <p><a href="{% url 'profile' %}">You need to be logged in</a></p>
