@@ -1,17 +1,24 @@
 {% extends "base_template.html" %}
 
 {% block content %}
-    <h1>Login Page</h1>
 
-    <form method="POST">
-        {% csrf_token %}
+
+<form method="POST">
+  <!-- Email input -->
+    {% csrf_token %}
         <fieldset>
             <legend>Login to account</legend>
             {{ form.as_p }}
         </fieldset>
-        <button type="submit">Login</button>
-    </form>
-    <p><a href="{% url 'register' %}">Register</a></p>
 
+  <!-- Submit button -->
+  <button type="submit" class="btn btn-primary btn-block mb-4">Sign in</button>
+
+  <!-- Register buttons -->
+  <div class="text-left">
+    <p><a href="{% url 'register' %}">Register</a></p>
+  </div>
+</form>
     <p><a href="{% url 'profile' %}">Back to Profile</a></p>
+
 {% endblock content %}
