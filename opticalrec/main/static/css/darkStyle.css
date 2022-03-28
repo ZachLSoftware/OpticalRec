@@ -1,0 +1,20 @@
+
+body * {
+  color: white;
+}
+
+caption {
+  color: white;
+}
+
+td, th {
+  border: 1px solid white;
+  color: white;
+}
+
+
+.navbar-dark .navbar-nav .nav-link{
+  color: white;
+}
+
+

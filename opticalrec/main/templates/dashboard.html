@@ -10,6 +10,9 @@
 <div class='containter'>
 <h1 style="text-align:center">Dashboard</h1>
 {% if user.is_authenticated %}
+<div class="d-flex justify-content-center">
+    <a href="{% url 'export_users_csv' %}"><button class="btn btn-primary mt-3">Export to CSV</button></a>
+</div>
   <div class='row justify-content-center g-0 mx-0'>
     {% for keybtn, valuebtn in data.items %}
     <div class='col-2' style="width:auto; padding: 5px">
@@ -38,7 +41,7 @@
     {% for key, value in data.items %}
      {% for item in value %}  
       {% for k, v in item.items %}  
-    <table class="table table-striped collapse level-2 dashboard" id="table.{{key}}.{{k}}">
+    <table class="table collapse level-2 dashboard" id="table.{{key}}.{{k}}">
       <thead> 
         <caption style="caption-side:top; text-align:center">{{k}}</caption>
         <tr>
@@ -67,11 +70,15 @@
     <h2>No Data Found</h2>
     {% endfor %}
 
+<<<<<<< Updated upstream
+=======
+
+
+>>>>>>> Stashed changes
         
   </div>
 {% else %}
   <p><a href="{% url 'profile' %}">You need to be logged in</a></p>
 {% endif %}
-  <p><a href="{% url 'index' %}">Return to home</a></p>
 {% endblock %}
 </div>
