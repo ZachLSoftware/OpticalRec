@@ -1,17 +1,24 @@
 {% extends 'base_template.html' %}
 
+
+{%load widget_tweaks %}
 {% block content %}
 
+
+<div class="d-flex justify-content-center">
 
 <form method="POST">
   <!-- Email input -->
     {% csrf_token %}
         <fieldset>
             <legend>Login to account</legend>
-            {{ form.as_p }}
+            {{form.username|add_class:'form-control'|attr:"placeholder: Enter username"}}
+            <br>
+            {{form.password|add_class:'form-control'|attr:"placeholder: Enter password"}}
         </fieldset>
 
   <!-- Submit button -->
+    <br>
   <button type="submit" class="btn btn-primary btn-block mb-4">Sign in</button>
 
   <!-- Register buttons -->
@@ -19,6 +26,6 @@
     <p><a href="{% url 'register' %}">Register</a></p>
   </div>
 </form>
-    <p><a href="{% url 'profile' %}">Back to Profile</a></p>
-
+</div>
 {% endblock content %}
+

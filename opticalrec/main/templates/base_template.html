@@ -13,9 +13,8 @@
         {% block js %}
         {% endblock %}
     </head>
-    <body class="body vh-100 dark">
+    <body class="body" id="body">
         {% block navbar %}
-
      <nav class="navbar navbar-expand-lg navbar-light bg-light">
   <div class="container">
     <a class="navbar-brand" href="#">Optical Rec</a>
@@ -62,7 +61,7 @@
 
         {% endblock %}
         
-        <div class="container vh-100 shadow">
+        <div class="container shadow">
             {% block content %}
             {% endblock %}
 

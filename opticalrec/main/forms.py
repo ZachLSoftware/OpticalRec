@@ -28,6 +28,7 @@ class VideoResizeForm(forms.ModelForm):
 class CreateUser(UserCreationForm):
     #password2 = None
 
+
     class Meta:
         model = get_user_model()
         fields= ("username",)

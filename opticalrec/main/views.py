@@ -168,6 +168,8 @@ def register(request):
             username = form.cleaned_data.get('username')
             messages.success(request, f"{username}'s account created.")
             return redirect('login')
+        else:
+            context["form"] = form
     else:
         form = UserCreationForm()
         context['form']=form

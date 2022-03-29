@@ -13,7 +13,7 @@
         {% block js %}
         {% endblock %}
     </head>
-    <body class="body bg-dark vh-100">
+    <body class="body bg-dark" id="body">
         {% block navbar %}
 
      <nav class="navbar navbar-expand-lg navbar-dark bg-secondary shadow" style="--bs-bg-opacity: .25;">
@@ -62,7 +62,7 @@
 
         {% endblock %}
         
-        <div class="container vh-100 shadow">
+        <div class="container shadow">
             {% block content %}
             {% endblock %}
 
