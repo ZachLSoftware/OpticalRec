@@ -169,11 +169,7 @@ def register(request):
             messages.success(request, f"{username}'s account created.")
             return redirect('login')
         else:
-<<<<<<< HEAD
             context["form"] = form
-=======
-            context['form']=form
->>>>>>> zl252
     else:
         form = UserCreationForm()
         context['form']=form
