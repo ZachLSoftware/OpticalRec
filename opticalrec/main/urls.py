@@ -20,6 +20,7 @@ urlpatterns = [
     path('extract_all_data/<int:vid_id>', views.extractAllData, name= 'extract_all_data'),
     path('extract_data/<int:label_id>', views.extractData, name= 'extract_data'),
     path('toggleTheme/<str:theme>', views.toggleTheme, name = "toggleTheme"),
-    path('export', views.exportToCSV, name='export_users_csv')
+    path('export', views.exportToCSV, name='export_users_csv'),
+    path('export/<int:l_id>', views.exportToCSV, name='export_users_csv')
 
 ]

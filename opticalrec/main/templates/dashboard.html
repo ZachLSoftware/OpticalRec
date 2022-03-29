@@ -10,7 +10,7 @@
 <div class='containter'>
 <h1 style="text-align:center">Dashboard</h1>
 {% if user.is_authenticated %}
-<div class="d-flex justify-content-center">
+<div class="d-flex justify-content-center collapse show" id="exportBtn">
     <a href="{% url 'export_users_csv' %}"><button class="btn btn-primary mt-3">Export to CSV</button></a>
 </div>
   <div class='row justify-content-center g-0 mx-0'>
@@ -43,7 +43,7 @@
       {% for k, v in item.items %}  
     <table class="table collapse level-2 dashboard" id="table.{{key}}.{{k}}">
       <thead> 
-        <caption style="caption-side:top; text-align:center">{{k}}</caption>
+        <caption style="caption-side:top; text-align:center"><a href="{% url 'export_users_csv' v.0.label.id %}"><button class="btn btn-primary mt-3">Export {{k}} to CSV</button></a></caption>
         <tr>
           <th scope="col">Value</th>
           <th scope="col">Difference</th>
@@ -67,7 +67,7 @@
 
 
     {% empty %}
-    <h2>No Data Found</h2>
+    <h2 id="noData">No Data Found</h2>
     {% endfor %}
 
     <a href="{% url 'export_users_csv' %}">Export database to CSV</a>
@@ -76,5 +76,17 @@
 {% else %}
   <p><a href="{% url 'profile' %}">You need to be logged in</a></p>
 {% endif %}
+
+<script>
+  window.addEventListener('DOMContentLoaded', function () {
+    var exBtn = document.getElementById('exportBtn');
+    if(document.getElementById('noData')){
+      exBtn.classList.remove('show');
+      exBtn.classList.add('invisible');
+    }
+    });
+</script>
+
 {% endblock %}
-</div>
+
+

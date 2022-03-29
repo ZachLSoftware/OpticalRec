@@ -160,14 +160,16 @@ def profile(request):
 
 def register(request):
     context={}
-    context['template']=getTemplate(request)
+    
     if request.method == "POST":
         form = CreateUser(request.POST)
         if form.is_valid():
             form.save()
             username = form.cleaned_data.get('username')
             messages.success(request, f"{username}'s account created.")
-            return redirect('login', context)
+            return redirect('login')
+        else:
+            context['form']=form
     else:
         form = UserCreationForm()
         context['form']=form
@@ -192,15 +194,22 @@ def toggleTheme(request, theme):
     context={}
     context['template']=getTemplate(request)
     return redirect(request.META['HTTP_REFERER'], context)
-def exportToCSV(request):
+
+
+def exportToCSV(request, l_id=0):
     response = HttpResponse(content_type='text/csv')
 
     writer = csv.writer(response)
     writer.writerow(['Video','Frame','User','Label','Timestamp','Value', 'Difference'])
 
-    for data in ExtractedData.objects.filter(user=request.user).all():
-        datalist=(data.video.name, data.frame.frameNum, data.user.username, data.label.name, data.timeStamp, data.value, data.valueChange)
-        writer.writerow(datalist)
+    if l_id == 0:
+        for data in ExtractedData.objects.filter(user=request.user).all():
+            datalist=(data.video.name, data.frame.frameNum, data.user.username, data.label.name, data.timeStamp, data.value, data.valueChange)
+            writer.writerow(datalist)
+    else:
+        for data in ExtractedData.objects.filter(user=request.user, label_id=l_id).all():
+            datalist=(data.video.name, data.frame.frameNum, data.user.username, data.label.name, data.timeStamp, data.value, data.valueChange)
+            writer.writerow(datalist)
 
     response['Content-Disposition'] = 'attachment; filename="data.csv"'
 
