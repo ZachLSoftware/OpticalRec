@@ -7,16 +7,16 @@
 <script type="text/javascript" src="{% static 'javascript/table_view.js' %}" defer></script>
 {% endblock %}
 {%block content%}
-<div class='containter'>
-<h1 style="text-align:center">Dashboard</h1>
+<div class='container'>
+<h1>Dashboard</h1>
 {% if user.is_authenticated %}
 <div class="d-flex justify-content-center collapse show" id="exportBtn">
-    <a href="{% url 'export_users_csv' %}"><button class="btn btn-primary mt-3">Export to CSV</button></a>
+    <a href="{% url 'export_users_csv' %}"><button class="btn btn-primary m-2">Export to CSV</button></a>
 </div>
   <div class='row justify-content-center g-0 mx-0'>
     {% for keybtn, valuebtn in data.items %}
     <div class='col-2' style="width:auto; padding: 5px">
-    <button onclick='toggleView("div.{{keybtn}}")' class="btn btn-primary mt-3 dashboard level-1" id="{{keybtn}}">{{videos|keyvalue:keybtn}}</button> <br/>
+    <button onclick='toggleView("div.{{keybtn}}")' class="btn btn-primary m-2 dashboard level-1" id="{{keybtn}}">{{videos|keyvalue:keybtn}}</button> <br/>
     </div>
     {% endfor %}
   </div>
@@ -27,7 +27,7 @@
       {% for i in valuebtn%}
          {% for kbtn, vbtn in i.items %}
         <div class='col-2' style="width:auto; padding: 5px">
-        <button onclick='toggleView("table.{{keybtn}}.{{kbtn}}")' class="btn btn-secondary mt-3 dashboard level-2" id="{{keybtn}}.{{kbtn}}">{{kbtn}}</button>  
+        <button onclick='toggleView("table.{{keybtn}}.{{kbtn}}")' class="btn btn-secondary m-2 dashboard level-2" id="{{keybtn}}.{{kbtn}}">{{kbtn}}</button>  
         </div>
       
         {% endfor %}
@@ -43,7 +43,7 @@
       {% for k, v in item.items %}  
     <table class="table collapse level-2 dashboard" id="table.{{key}}.{{k}}">
       <thead> 
-        <caption style="caption-side:top; text-align:center"><a href="{% url 'export_users_csv' v.0.label.id %}"><button class="btn btn-primary mt-3">Export {{k}} to CSV</button></a></caption>
+        <caption style="caption-side:top; text-align:center"><a href="{% url 'export_users_csv' v.0.label.id %}"><button class="btn btn-primary m-2">Export {{k}} to CSV</button></a></caption>
         <tr>
           <th scope="col">Value</th>
           <th scope="col">Difference</th>

@@ -17,4 +17,12 @@ td, th {
   color: white;
 }
 
+.showcase-img {
+  filter: invert(1);
+}
+.img-fluid {
+  filter: invert(1);
+}
+
+
 
