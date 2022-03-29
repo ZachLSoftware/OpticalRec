@@ -1,1 +1,0 @@
-create database IF NOT EXISTS dev_db;

@@ -1,5 +1,4 @@
 from django.shortcuts import render, redirect
-from matplotlib.style import context
 from .models import *
 from .forms import *
 from pathlib import Path
