@@ -3,5 +3,5 @@
 	"img_height": 180,
 	"img_width": 180,
 	"color_mode": "grayscale",
-	"model": "main/utils/grayscale_add.h5"
+	"model": "main/utils/grayscale_final.h5"
 }

@@ -17,6 +17,7 @@ import cv2
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib import messages
 import csv
+from django.contrib.auth import authenticate, login
 
 # Create your views here.
 def index(request):
@@ -165,8 +166,12 @@ def register(request):
         if form.is_valid():
             form.save()
             username = form.cleaned_data.get('username')
-            messages.success(request, f"{username}'s account created.")
-            return redirect('login')
+            messages.success(request, f"{username}'s account was created.")
+            new_user= authenticate(username=form.cleaned_data['username'],
+                                    password=form.cleaned_data['password1'],
+                                    )
+            login(request,new_user)
+            return redirect('dashboard')
         else:
             context["form"] = form
     else:
