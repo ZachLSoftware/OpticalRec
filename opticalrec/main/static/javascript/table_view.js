@@ -22,3 +22,5 @@ function toggleView(tbl) {
       x.classList.add('show');
     }
   } 
+
+
