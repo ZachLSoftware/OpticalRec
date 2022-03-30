@@ -5,6 +5,7 @@
     <link rel="stylesheet" href="{% static 'css/cropper.css' %}">
     <script type="text/javascript" src="{% static 'javascript/cropper.js' %}"></script>
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    
 
     <style>
         .crop_container {
@@ -38,22 +39,32 @@
   <div id="replace"></div>
 
 </div>
-
+<script>    
+  function finishClick(){
+    location.href="{% url 'import_video_tensor' frame.video.id %}";
+    alert('Your video is being prepared. You will be redirected when it is finished.')
+}
+function newFrame(){
+    location.href=location.href="{% url 'video_crop_display' frame.video.id frame.frameNum %}";
+}
+</script>
   <div class="d-flex justify-content-center">
    <div class="collapse" id="before_crop">
 
         <button class="btn btn-primary m-2" id="crop-btn">Crop</button>
-        <button onclick="location.href='{% url 'video_crop_display' frame.video.id frame.frameNum %}'" class="btn btn-primary m-2 btn-block" id="new-prev-btn">New Frame</button>
-        <button onclick="location.href='{% url 'import_video_tensor' frame.video.id %}'" class="btn btn-primary m-2" id="fin-btn">Finish</button>
+        <button onclick="newFrame()" class="btn btn-primary m-2 btn-block" id="new-prev-btn">New Frame</button>
+        <button onclick="finishClick()" class="btn btn-primary m-2" id="fin-btn">Finish</button>
+        <button onclick="cropHelp()" class="btn btn-primary m-2" id="helpBtn">Help</button>
 
     </div>
+
     <div class="collapse" id="after_crop">
       <div id="label-form">
         <span id="error"></span>
           
           <input type="text" class="form-control" id="label" name="label" placeholder="Field Label" required />
       </div>
-        <button class="btn btn-primary m-2" id="confirm-btn">Confirm</button>
+        <button class="btn btn-primary m-2" id="confirm-btn">Confirm and Add</button>
         <button class="btn btn-primary m-2" id="reject-btn">Reject</button>
         <button class="btn btn-primary m-2" id="cnf-fin-btn">Finish</button>
   </div>

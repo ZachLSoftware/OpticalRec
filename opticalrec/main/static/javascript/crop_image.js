@@ -32,7 +32,7 @@ window.addEventListener('DOMContentLoaded', function () {
         document.getElementById("before_crop").classList.add("show")
         document.getElementById("after_crop").classList.remove("show")
         hideImage.classList.add("show")
-    })
+    });
 
     cnFinBtn.addEventListener('click', ()=>{
         if (isNaN(document.getElementById("label").value ) && document.getElementById("label").value != ""){
@@ -41,11 +41,14 @@ window.addEventListener('DOMContentLoaded', function () {
             var newUrl= url.concat("/0/1");
             temp.action=newUrl;
             sendData();
+            alert('Your video is being prepared. You will be redirected when it is finished.')
         }
         else{
             document.getElementById("error").innerHTML="Please enter a valid text Label";
         }
-    })
+    });
+
+  
 
     confirmBtn.addEventListener('click', ()=>{
         if (isNaN(document.getElementById("label").value ) && document.getElementById("label").value != ""){
@@ -80,6 +83,7 @@ window.addEventListener('DOMContentLoaded', function () {
                     if(response.status==0){
                         console.log(response.status)
                         window.location.href=response.url;
+                        
                     }
                     else{
                         alertBox.innerHTML = response.message

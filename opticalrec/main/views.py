@@ -143,7 +143,7 @@ def video_crop_display(request, vid_id, frame_num=0, finish=0):
         form = VideoResizeForm()
         if frame_num!=0:
             Frame.objects.get(video_id=obj.id, frameFile__contains="previewFrame").delete()
-            frame_num+=50
+            frame_num+=500
         else:
             frame_num=0
         f=preview_frame(obj,frame_num)
