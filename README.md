@@ -7,7 +7,7 @@ Our optical recognition software is designed for users to be able to automatical
 We have registered our software to a domain name using domain registrar NameCheap so no installation and cloning repository is required. Below is the link to our optical recognition software:
 
 ```
-[Optical Recognition](https://opticalrec.co.uk/main/)
+https://opticalrec.co.uk/main/
 ```
 
 ## Usage
