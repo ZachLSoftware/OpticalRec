@@ -1,7 +1,9 @@
 {% extends template %}
 
 {% load static %}
-
+{% block js %}
+<script type="text/javascript" src="{% static 'javascript/screen_size.js' %}" defer></script>
+{% endblock %}
 {%block content %}
 
 
@@ -148,33 +150,8 @@
                 </div>
             </div>
         </section>
-        <!-- Footer-->
 
 
 
 
-
-
-
-
-
-
-<script>
-    window.addEventListener('DOMContentLoaded', function() {
-        var sec = document.getElementsByClassName('section')
-        console.log(sec[0])
-        for(var i=0; i<sec.length; i++){
-
-            if (document.getElementById('body').classList.contains('bg-dark')){
-            sec[i].classList.remove('bg-light');
-            sec[i].classList.add('bg-dark');
-            }else
-            {
-            sec[i].classList.remove('bg-dark');
-            sec[i].classList.add('bg-light');
-            }
-        }
-       });
-
-</script>
 {% endblock %}
