@@ -22,4 +22,4 @@ https://opticalrec.co.uk/main/
 
 
 ## Authors and acknowledgment
-This project is the combined work of Zach Larsen, Howard Kang, Imran Lawal Robbie Hill and Ikenna Nnaji. Special thanks to our supervisor John Drake for his guidance and support and to Jeremy Levesley for being our client for this project.
+This project is the combined work of Zach Larsen, Howard Kang, Imran Lawal, Robbie Hill and Ikenna Nnaji. Special thanks to our supervisor John Drake for his guidance and support and to Jeremy Levesley for being our client for this project.
