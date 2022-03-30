@@ -1,5 +1,5 @@
 {% extends template %}
-
+{% block title %}<title>Home</title>{% endblock %}
 {% load static %}
 {% block js %}
 <script type="text/javascript" src="{% static 'javascript/screen_size.js' %}" defer></script>
@@ -21,7 +21,7 @@
                     <div class="col-xl-6">
                         <div class="text-center text-white">
                             <!-- Page heading-->
-                            <h1 class="mb-5">Welcome to OpticalRec</h1>
+                            <h1 class="mb-5" id="home-title">Welcome to OpticalRec</h1>
 
                         </div>
                     </div>

@@ -1,4 +1,3 @@
-from tkinter import CASCADE
 from django.db import models
 from .validators import *
 from django_random_id_model import RandomIDModel
