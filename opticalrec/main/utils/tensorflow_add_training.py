@@ -14,8 +14,7 @@ from tensorflow.keras.models import Sequential
 
 
 
-data_dir=r'C:\Users\zacha\Desktop\additional'
-#data_dir=r'C:\Users\zacha\OneDrive - University of Leicester\Year 2\CO2201\Group_10\Training\data\Zoom'
+data_dir=r'\additional'
 #valid_dir= pathlib.Path(valid_dir)
 data_dir = pathlib.Path(data_dir)
 
@@ -67,7 +66,7 @@ first_image = image_batch[0]
 
 num_classes = len(class_names)
 
-model=tf.keras.models.load_model(r'C:\Users\zacha\OneDrive - University of Leicester\Year 2\CO2201\Group_10\Training\grayscale_new.h5')
+model=tf.keras.models.load_model(r'Group_10\Training\grayscale_new.h5')
 
 epochs=20
 history = model.fit(
@@ -83,7 +82,7 @@ loss = history.history['loss']
 val_loss = history.history['val_loss']
 
 epochs_range = range(epochs)
-model.save(r'C:\Users\zacha\OneDrive - University of Leicester\Year 2\CO2201\Group_10\Training\grayscale_add.h5')
+model.save(r'\Group_10\Training\grayscale_add.h5')
 plt.figure(figsize=(8, 8))
 plt.subplot(1, 2, 1)
 plt.plot(epochs_range, acc, label='Training Accuracy')

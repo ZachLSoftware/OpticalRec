@@ -14,8 +14,7 @@ from tensorflow.keras.models import Sequential
 
 
 
-data_dir=r'C:\Users\zacha\Desktop\one'
-#data_dir=r'C:\Users\zacha\OneDrive - University of Leicester\Year 2\CO2201\Group_10\Training\data\Zoom'
+data_dir=r''
 #valid_dir= pathlib.Path(valid_dir)
 data_dir = pathlib.Path(data_dir)
 
@@ -107,7 +106,7 @@ loss = history.history['loss']
 val_loss = history.history['val_loss']
 
 epochs_range = range(epochs)
-model.save(r'C:\Users\zacha\OneDrive - University of Leicester\Year 2\CO2201\Group_10\Training\small.h5')
+model.save(r'Group_10\Training\small.h5')
 plt.figure(figsize=(8, 8))
 plt.subplot(1, 2, 1)
 plt.plot(epochs_range, acc, label='Training Accuracy')
